@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT, ADD_NEW_COUNTER } from './constants'
+import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER} from './constants'
 
 //each action should have the following signiture.
 //  {
@@ -9,7 +9,7 @@ import { INCREMENT, DECREMENT, ADD_NEW_COUNTER } from './constants'
 //                                    newCounter action
 //  }
 
-//this action tell the reducer which counter with specified id needs to be
+//this action tells the reducer which counter with specified id needs to be
 //incremented.
 export const increment = (id) => {
   return {
@@ -18,7 +18,7 @@ export const increment = (id) => {
       id
     }
   }
-}
+};
 
 //this action tell the reducer which counter with specified id needs to be
 //decremented.
@@ -29,15 +29,26 @@ export const decrement = (id) => {
       id
     }
   }
-}
+};
 
-//tells the reducer, we need a new counter on the scene with a new ID
-export const newCounter = () => {
+//tells the reducer, we need a new player on the scene
+export const newPlayer = () => {
   return {
-    type: ADD_NEW_COUNTER
+    type: ADD_NEW_PLAYER
   }
-}
+};
 
+//tells the reducer, we need a to update a player on the scene
+export const updatePlayer = (id, field, data) => {
+  return {
+    type: UPDATE_PLAYER,
+    payload: {
+      id,
+      field,
+      data
+    }
+  }
+};
 
 export const incrementWithDelay = (id) => {
   return (dispatch, getState) => {
