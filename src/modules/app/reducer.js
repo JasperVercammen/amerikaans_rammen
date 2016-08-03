@@ -1,5 +1,6 @@
 import {handleActions} from 'redux-actions'
-import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER} from './constants'
+import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER} from './constants'
+import {clone, filter} from 'lodash';
 
 const initialState = {
   playerCount: 2,
@@ -28,15 +29,19 @@ export default handleActions({
     const {payload: {id, field, data}} = action;
 
     //because payload contains the id target that one and update it
-
+    const newPlayers = clone(state.players);
+    newPlayers[id][field] = data;
     return {
       ...state,
-      players: {
-        ...state.players,
-        [id]: {
-          [field]: data
-        }
-      }
+      players: newPlayers
+    }
+  },
+  [REMOVE_PLAYER]: (state, action) => {
+    const {payload: {id}} = action;
+    const newPlayers = filter(state.players, (player, i) => i !== id);
+    return {
+      ...state,
+      players: newPlayers
     }
   },
   [DECREMENT]: (state, action) => {

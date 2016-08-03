@@ -1,12 +1,12 @@
-import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER} from './constants'
+import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER} from './constants'
 
-//each action should have the following signiture.
+//each action should return the following signiture.
 //  {
 //     type: <type of action>,        type is required
 //     payload: <the actual payload>  payload is optional. if you don't
 //                                    have anything to send to reducer,
 //                                    you don't need the payload. for example
-//                                    newCounter action
+//                                    newPlayer action
 //  }
 
 //this action tells the reducer which counter with specified id needs to be
@@ -35,6 +35,16 @@ export const decrement = (id) => {
 export const newPlayer = () => {
   return {
     type: ADD_NEW_PLAYER
+  }
+};
+
+//tells the reducer, we need a remove a player from the scene
+export const removePlayer = (id) => {
+  return {
+    type: REMOVE_PLAYER,
+    payload:{
+      id
+    }
   }
 };
 

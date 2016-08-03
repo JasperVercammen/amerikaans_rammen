@@ -13,5 +13,6 @@ export const ADD_NEW_COUNTER = `${NAME}/NEW`;
 // Amerikaans Rammen
 export const ADD_NEW_PLAYER = `${NAME}/NEW_PLAYER`;
 export const UPDATE_PLAYER = `${NAME}/UPDATE_PLAYER`;
+export const REMOVE_PLAYER = `${NAME}/REMOVE_PLAYER`;
 
 //as you can see above, each action is namespaced with module's name.
