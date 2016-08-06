@@ -1,4 +1,4 @@
-import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
 
 //each action should return the following signiture.
 //  {
@@ -9,24 +9,13 @@ import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER} from
 //                                    newPlayer action
 //  }
 
-//this action tells the reducer which counter with specified id needs to be
-//incremented.
-export const increment = (id) => {
+//this action tell the reducer to update the scores table with extra scores
+export const addScores = (game, scores) => {
   return {
-    type: INCREMENT,
+    type: ADD_SCORES,
     payload: {
-      id
-    }
-  }
-};
-
-//this action tell the reducer which counter with specified id needs to be
-//decremented.
-export const decrement = (id) => {
-  return {
-    type: DECREMENT,
-    payload: {
-      id
+      game,
+      scores
     }
   }
 };

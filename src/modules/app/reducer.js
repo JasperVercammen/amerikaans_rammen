@@ -1,11 +1,25 @@
 import {handleActions} from 'redux-actions'
-import {INCREMENT, DECREMENT, ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
 import {clone, filter} from 'lodash';
+import {games, getNextGame} from '../../helpers/games';
 
 const initialState = {
   playerCount: 2,
   players: [{name: ''}, {name: ''}],
-  counters: {}
+  scores: {
+    [games[0]]: [],
+    [games[1]]: [],
+    [games[2]]: [],
+    [games[3]]: [],
+    [games[4]]: [],
+    [games[5]]: [],
+    [games[6]]: [],
+    [games[7]]: [],
+    [games[8]]: [],
+    [games[9]]: []
+  },
+  currentGame: games[0],
+  finished: false
 };
 
 //handleActions is a helper function to instead of using a switch case statement,
@@ -13,7 +27,7 @@ const initialState = {
 
 export default handleActions({
   [ADD_NEW_PLAYER]: (state, action) => {
-    const { playerCount } = state;
+    const {playerCount} = state;
     const newPlayerCount = playerCount + 1;
 
     return {
@@ -44,17 +58,19 @@ export default handleActions({
       players: newPlayers
     }
   },
-  [DECREMENT]: (state, action) => {
-    const {payload: {id}} = action;
+  [ADD_SCORES]: (state, action) => {
+    const {payload: {game, scores}} = action;
 
-    //this is exatcly similar as previous reducer, except we are decrementing
+    const stateScores = clone(state.scores);
+    stateScores[game] = scores;
+
+    const nextGame = getNextGame(state.currentGame);
 
     return {
       ...state,
-      counters: {
-        ...state.counters,
-        [id]: state.counters[id] - 1
-      }
+      scores: stateScores,
+      currentGame: nextGame ? nextGame : state.currentGame,
+      finished: nextGame ? false : true
     }
   }
 }, initialState)
