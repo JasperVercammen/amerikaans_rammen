@@ -1,59 +1,76 @@
-import { handleActions } from 'redux-actions'
-import { INCREMENT, DECREMENT, ADD_NEW_COUNTER } from './constants'
+import {handleActions} from 'redux-actions'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
+import {clone, filter} from 'lodash';
+import {games, getNextGame} from '../../helpers/games';
 
 const initialState = {
-  idGen: 0,
-  counters: { }
-}
-
-//you can do better here, I was just showing that you need to make a new copy
-//of state. It is ok to deep copy of state. It will prevent unseen bugs in the future
-//for better performance you can use immutableJS
+  playerCount: 2,
+  players: [{name: ''}, {name: ''}],
+  scores: {
+    [games[0]]: [],
+    [games[1]]: [],
+    [games[2]]: [],
+    [games[3]]: [],
+    [games[4]]: [],
+    [games[5]]: [],
+    [games[6]]: [],
+    [games[7]]: [],
+    [games[8]]: [],
+    [games[9]]: []
+  },
+  currentGame: games[0],
+  finished: false
+};
 
 //handleActions is a helper function to instead of using a switch case statement,
 //we just use the regular map with function state attach to it.
 
 export default handleActions({
-  [ADD_NEW_COUNTER]: (state, action) => {
-    const { idGen } = state
-    const newId = idGen + 1
-
-    //this reducer basically generate a new id for new counter and
-    //assign value 0 to that id.
-
-    return {
-      idGen: newId,
-      counters: {
-        ...state.counters,
-        [newId]: 0
-      }
-    }
-  },
-  [INCREMENT]: (state, action) => {
-    const { payload: { id } } = action
-
-    //because payload contains the id and we already know that we are about
-    //to increment the value of that id, we modify only that value by one
+  [ADD_NEW_PLAYER]: (state, action) => {
+    const {playerCount} = state;
+    const newPlayerCount = playerCount + 1;
 
     return {
       ...state,
-      counters: {
-        ...state.counters,
-        [id]: state.counters[id] + 1
-      }
+      playerCount: newPlayerCount,
+      players: [
+        ...state.players,
+        {name: ''}
+      ]
     }
   },
-  [DECREMENT]: (state, action) => {
-    const { payload: { id } } = action
+  [UPDATE_PLAYER]: (state, action) => {
+    const {payload: {id, field, data}} = action;
 
-    //this is exatcly similar as previous reducer, except we are decrementing
+    //because payload contains the id target that one and update it
+    const newPlayers = clone(state.players);
+    newPlayers[id][field] = data;
+    return {
+      ...state,
+      players: newPlayers
+    }
+  },
+  [REMOVE_PLAYER]: (state, action) => {
+    const {payload: {id}} = action;
+    const newPlayers = filter(state.players, (player, i) => i !== id);
+    return {
+      ...state,
+      players: newPlayers
+    }
+  },
+  [ADD_SCORES]: (state, action) => {
+    const {payload: {game, scores}} = action;
+
+    const stateScores = clone(state.scores);
+    stateScores[game] = scores;
+
+    const nextGame = getNextGame(state.currentGame);
 
     return {
       ...state,
-      counters: {
-        ...state.counters,
-        [id]: state.counters[id] - 1
-      }
+      scores: stateScores,
+      currentGame: nextGame ? nextGame : state.currentGame,
+      finished: nextGame ? false : true
     }
-  },
+  }
 }, initialState)

@@ -16,7 +16,6 @@ import styles, {colors} from '../styles/general';
 
 class Dashboard extends Component {
   newGame = () => {
-    console.log('Let\'s start', this.props.navigator);
     this.props.navigator.push({
       id: 'addplayers'
     })
@@ -38,7 +37,7 @@ class Dashboard extends Component {
         <ScrollView style={styles.container}>
           <Text style={styles.subheader}>Vorige spelen</Text>
           <View>
-            <Text>Hier komt een lijst met al gespeelde spellen.</Text>
+            <Text>Hier komt een lijst met al gespeelde spelletjes.</Text>
           </View>
         </ScrollView>
         <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}

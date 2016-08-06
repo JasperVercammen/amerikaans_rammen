@@ -1,43 +1,53 @@
-import { INCREMENT, DECREMENT, ADD_NEW_COUNTER } from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
 
-//each action should have the following signiture.
+//each action should return the following signiture.
 //  {
 //     type: <type of action>,        type is required
 //     payload: <the actual payload>  payload is optional. if you don't
 //                                    have anything to send to reducer,
 //                                    you don't need the payload. for example
-//                                    newCounter action
+//                                    newPlayer action
 //  }
 
-//this action tell the reducer which counter with specified id needs to be
-//incremented.
-export const increment = (id) => {
+//this action tell the reducer to update the scores table with extra scores
+export const addScores = (game, scores) => {
   return {
-    type: INCREMENT,
+    type: ADD_SCORES,
     payload: {
+      game,
+      scores
+    }
+  }
+};
+
+//tells the reducer, we need a new player on the scene
+export const newPlayer = () => {
+  return {
+    type: ADD_NEW_PLAYER
+  }
+};
+
+//tells the reducer, we need a remove a player from the scene
+export const removePlayer = (id) => {
+  return {
+    type: REMOVE_PLAYER,
+    payload:{
       id
     }
   }
-}
+};
 
-//this action tell the reducer which counter with specified id needs to be
-//decremented.
-export const decrement = (id) => {
+//tells the reducer, we need a to update a player on the scene
+export const updatePlayer = (id, field, data) => {
   return {
-    type: DECREMENT,
+    type: UPDATE_PLAYER,
     payload: {
-      id
+      id,
+      field,
+      data
     }
   }
-}
-
-//tells the reducer, we need a new counter on the scene with a new ID
-export const newCounter = () => {
-  return {
-    type: ADD_NEW_COUNTER
-  }
-}
-
+};
 
 export const incrementWithDelay = (id) => {
   return (dispatch, getState) => {
