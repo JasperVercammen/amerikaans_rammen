@@ -31,7 +31,7 @@ class App extends Component {
     const props = this.props;
     switch (route.id) {
       case 'dashboard':
-        return (<Dashboard title='Dashboard' navigator={navigator}/>);
+        return (<Dashboard title='Dashboard' navigator={navigator} getGames={props.getGames}/>);
       case 'addplayers':
         return (<AddPlayers navigator={navigator}
                             addFnc={props.addNewPlayer}
@@ -45,6 +45,8 @@ class App extends Component {
                            scores={props.scores}
                            currentGame={props.currentGame}
                            finished={props.finished}
+                           saved={props.saved}
+                           saveGame={props.saveGame}
                            title='Add Players'/>);
       case 'addscores':
         return (<AddScores navigator={navigator}
@@ -68,7 +70,8 @@ const mapStateToProps = (state) => {
     players: state.app.players,
     currentGame: state.app.currentGame,
     scores: state.app.scores,
-    finished: state.app.finished
+    finished: state.app.finished,
+    saved: state.app.saved
   }
 };
 
@@ -77,7 +80,9 @@ const mapDispatchToProps = (dispatch) => {
     addNewPlayer: () => dispatch(actions.newPlayer()),
     updatePlayer: (id, field, name) => dispatch(actions.updatePlayer(id, field, name)),
     removePlayer: (id) => dispatch(actions.removePlayer(id)),
-    addScores: (game, scores) => dispatch(actions.addScores(game, scores))
+    addScores: (game, scores) => dispatch(actions.addScores(game, scores)),
+    saveGame: (players, scores, startTime) => dispatch(actions.saveGame(players, scores, startTime)),
+    getGames: () => dispatch(actions.getGames())
   }
 };
 

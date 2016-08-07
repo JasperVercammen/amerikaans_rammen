@@ -1,9 +1,10 @@
 import {handleActions} from 'redux-actions'
-import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, SAVE_GAME, GET_GAMES} from './constants'
 import {clone, filter} from 'lodash';
 import {games, getNextGame} from '../../helpers/games';
 
 const initialState = {
+  savedGames: [],
   playerCount: 2,
   players: [{name: ''}, {name: ''}],
   scores: {
@@ -19,7 +20,8 @@ const initialState = {
     [games[9]]: []
   },
   currentGame: games[0],
-  finished: false
+  finished: false,
+  saved: false
 };
 
 //handleActions is a helper function to instead of using a switch case statement,
@@ -71,6 +73,20 @@ export default handleActions({
       scores: stateScores,
       currentGame: nextGame ? nextGame : state.currentGame,
       finished: nextGame ? false : true
+    }
+  },
+  [SAVE_GAME]: (state, action) => {
+    return {
+      ...state,
+      saved: true
+    }
+  },
+  [GET_GAMES]: (state, action) => {
+    const {payload: {result}} = action;
+
+    return {
+      ...state,
+      savedGames: result
     }
   }
 }, initialState)

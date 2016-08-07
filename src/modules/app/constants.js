@@ -5,13 +5,10 @@
 //name of this modules
 export const NAME = 'app';
 
-//action types
-export const INCREMENT = `${NAME}/INCREMENT`;
-export const DECREMENT = `${NAME}/DECREMENT`;
-export const ADD_NEW_COUNTER = `${NAME}/NEW`;
-
 // Amerikaans Rammen
 export const ADD_NEW_PLAYER = `${NAME}/NEW_PLAYER`;
 export const UPDATE_PLAYER = `${NAME}/UPDATE_PLAYER`;
 export const REMOVE_PLAYER = `${NAME}/REMOVE_PLAYER`;
 export const ADD_SCORES = `${NAME}/ADD_SCORES`;
+export const SAVE_GAME = `${NAME}/SAVE_GAME`;
+export const GET_GAMES = `${NAME}/GET_GAMES`;
