@@ -63,15 +63,3 @@ export const getGames = () => {
   }
 };
 
-export const saveGame = (players, scores, startTime) => {
-  return (dispatch, getState) => {
-    apiSaveGame('Jasper', players, scores, startTime).then((result) => {
-      dispatch({
-        type: SAVE_GAME,
-        payload: {
-          result
-        }
-      })
-    });
-  }
-};

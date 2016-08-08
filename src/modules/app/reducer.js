@@ -75,12 +75,6 @@ export default handleActions({
       finished: nextGame ? false : true
     }
   },
-  [SAVE_GAME]: (state, action) => {
-    return {
-      ...state,
-      saved: true
-    }
-  },
   [GET_GAMES]: (state, action) => {
     const {payload: {result}} = action;
 

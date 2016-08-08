@@ -66,7 +66,7 @@ class AddPlayers extends Component {
                   returnKeyType={last ? 'done' : 'next'}
                   value={player.name}/>
                 {players.length > 2 ?
-                  <Icon.Button name='md-close' style={{width: 40}} backgroundColor='transparent' color={colors.text}
+                  <Icon.Button name='md-close' style={{width: 40}} backgroundColor='transparent' underlayColor='transparent' color={colors.text}
                                onPress={() => removeFnc(index)}/> :
                   <View style={{width: 40}}/>
                 }

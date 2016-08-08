@@ -65,31 +65,25 @@ class GameBoard extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps.saved === true && nextProps.saved !== this.props.saved) {
-      Alert.alert('Succesfull save', 'Uw data is succesvol opgeslagen. Terug naar startscherm?', [
-        {
-          text: 'Cancel', onPress: () => {
-        }
-        },
-        {text: 'OK', onPress: () => this.props.navigator.popToTop()}
-      ]);
-    }
     if (nextProps.finished === true && nextProps.finished !== this.props.finished) {
       if (this.interval) {
         clearInterval(this.interval);
       }
+      this.props.navigator.push({
+        id: 'stats',
+        players: nextProps.players,
+        scores: nextProps.scores,
+        gameEnd: new Date().getTime(),
+        gameStart: this.state.startTime,
+        save: true
+      });
     }
-  };
-
-  saveGame = () => {
-    const {players, scores} = this.props;
-    this.props.saveGame(players, scores, this.state.startTime);
   };
 
   render() {
     const {players, scores, currentGame, finished} = this.props,
-          onPress = finished ? this.saveGame : this.addScores,
-          icon    = finished ? 'md-done-all' : 'md-checkmark';
+          onPress = this.addScores,
+          icon    = 'md-checkmark';
     return (
       <View style={styles.wrapper}>
         <ScrollView style={{flex: 1}}>
@@ -153,8 +147,7 @@ GameBoard.propTypes = {
   players: PropTypes.array.isRequired,
   currentGame: PropTypes.string.isRequired,
   scores: PropTypes.object.isRequired,
-  finished: PropTypes.bool.isRequired,
-  saveGame: PropTypes.func.isRequired
+  finished: PropTypes.bool.isRequired
 };
 
 export default GameBoard;

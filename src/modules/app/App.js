@@ -3,7 +3,7 @@ import {StyleSheet, Navigator} from 'react-native'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import {Dashboard, AddPlayers, AddScores, GameBoard} from './../../components/index';
+import {Dashboard, AddPlayers, AddScores, GameBoard, Stats} from './../../components/index';
 
 import * as actions from './actions'
 
@@ -45,8 +45,6 @@ class App extends Component {
                            scores={props.scores}
                            currentGame={props.currentGame}
                            finished={props.finished}
-                           saved={props.saved}
-                           saveGame={props.saveGame}
                            title='Add Players'/>);
       case 'addscores':
         return (<AddScores navigator={navigator}
@@ -54,6 +52,10 @@ class App extends Component {
                            currentGame={props.currentGame}
                            addScores={props.addScores}
                            title='Add Scores'/>);
+      case 'stats':
+        return (<Stats navigator={navigator}
+                       {...route}
+                       title='Statistieken'/>);
     }
   };
 }
@@ -70,9 +72,8 @@ const mapStateToProps = (state) => {
     players: state.app.players,
     currentGame: state.app.currentGame,
     scores: state.app.scores,
-    finished: state.app.finished,
-    saved: state.app.saved
-  }
+    finished: state.app.finished
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -81,9 +82,8 @@ const mapDispatchToProps = (dispatch) => {
     updatePlayer: (id, field, name) => dispatch(actions.updatePlayer(id, field, name)),
     removePlayer: (id) => dispatch(actions.removePlayer(id)),
     addScores: (game, scores) => dispatch(actions.addScores(game, scores)),
-    saveGame: (players, scores, startTime) => dispatch(actions.saveGame(players, scores, startTime)),
     getGames: () => dispatch(actions.getGames())
-  }
+  };
 };
 
 //Here's the most complex part of our app. connect is a function which selects,
