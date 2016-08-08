@@ -45,7 +45,7 @@ class App extends Component {
                            scores={props.scores}
                            currentGame={props.currentGame}
                            finished={props.finished}
-                           title='Add Players'/>);
+                           title='Gameboard'/>);
       case 'addscores':
         return (<AddScores navigator={navigator}
                            players={props.players}

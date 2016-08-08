@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles, {colors} from '../styles/general';
 import ScoreTable, {getWinnerName} from '../helpers/scores';
-import {padStart} from 'lodash';
+import {makeTimer} from '../helpers/time';
 
 class GameBoard extends Component {
   constructor() {
@@ -41,23 +41,6 @@ class GameBoard extends Component {
     }, 450);
   }
 
-  getTimer = () => {
-    const {time} = this.state;
-    let delta = time / 1000;
-    // calculate (and subtract) whole hours
-    const hours = Math.floor(delta / 3600) % 24;
-    delta -= hours * 3600;
-
-    // calculate (and subtract) whole minutes
-    const minutes = Math.floor(delta / 60) % 60;
-    delta -= minutes * 60;
-
-    // what's left is seconds
-    const seconds = Math.floor(delta % 60);  // in theory the modulus is not required
-
-    return `${padStart(hours.toString(), 2, '0')}:${padStart(minutes.toString(), 2, '0')}:${padStart(seconds.toString(), 2, '0')}`;
-  };
-
   componentWillUnmount() {
     if (this.interval) {
       clearInterval(this.interval);
@@ -69,7 +52,7 @@ class GameBoard extends Component {
       if (this.interval) {
         clearInterval(this.interval);
       }
-      this.props.navigator.push({
+      this.props.navigator.replace({
         id: 'stats',
         players: nextProps.players,
         scores: nextProps.scores,
@@ -88,7 +71,7 @@ class GameBoard extends Component {
       <View style={styles.wrapper}>
         <ScrollView style={{flex: 1}}>
           <_Header scores={scores} players={players} finished={finished} currentGame={currentGame}
-                   time={this.getTimer()}/>
+                   time={makeTimer(this.state.time)}/>
 
           <View style={StyleSheet.flatten([styles.container, {alignSelf: 'stretch'}])}>
             <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}
@@ -132,7 +115,7 @@ const _Header = ({scores, players, finished, currentGame, time}) => {
                 justifyContent: 'center',
                 borderWidth: 6,
                 borderRadius: 80,
-                borderColor: '#006064'
+                borderColor: colors.mainDark
               }}>
           {topText}
           {bottomText}

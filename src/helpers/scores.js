@@ -27,6 +27,16 @@ const getTotalScoreForPlayer = (player, scores) => {
   }, 0);
 };
 
+const getOrderWithScores = (players, scores) => {
+  const scoreList = players.map((player, index) => {
+    return {
+      player: index,
+      score: getTotalScoreForPlayer(index, scores)
+    };
+  });
+  return scoreList.sort((p1, p2) => p1.score - p2.score);
+};
+
 const getWinner = (scores, players) => {
   const totalScores = players.map((player, index) => {
     return getTotalScoreForPlayer(index, scores);
@@ -131,5 +141,6 @@ export {
   getScoreForPlayerForGame,
   getTotalScoreForPlayer,
   getWinner,
-  getWinnerName
+  getWinnerName,
+  getOrderWithScores
 }
