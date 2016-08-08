@@ -13,28 +13,73 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles, {colors} from '../styles/general';
 import ScoreTable, {getWinnerName} from '../helpers/scores';
+import {makeTimer} from '../helpers/time';
 
 class GameBoard extends Component {
+  constructor() {
+    super();
+    this.interval = null;
+  }
+
   addScores = () => {
     this.props.navigator.push({
       id: 'addscores'
     });
   };
 
+  componentWillMount() {
+    this.setState({
+      startTime: new Date().getTime(),
+      time: 0
+    });
+    this.interval = setInterval(() => {
+      const time = new Date().getTime() - this.state.startTime;
+
+      this.setState({
+        time
+      })
+    }, 450);
+  }
+
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.finished === true && nextProps.finished !== this.props.finished) {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+      this.props.navigator.replace({
+        id: 'stats',
+        players: nextProps.players,
+        scores: nextProps.scores,
+        gameEnd: new Date().getTime(),
+        gameStart: this.state.startTime,
+        save: true
+      });
+    }
+  };
+
   render() {
-    const {players, scores, currentGame, finished} = this.props;
+    const {players, scores, currentGame, finished} = this.props,
+          onPress = this.addScores,
+          icon    = 'md-checkmark';
     return (
       <View style={styles.wrapper}>
         <ScrollView style={{flex: 1}}>
-          <_Header scores={scores} players={players} finished={finished} currentGame={currentGame}/>
+          <_Header scores={scores} players={players} finished={finished} currentGame={currentGame}
+                   time={makeTimer(this.state.time)}/>
 
           <View style={StyleSheet.flatten([styles.container, {alignSelf: 'stretch'}])}>
-            {finished || <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}
-                                                  onPress={this.addScores}>
+            <TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}
+                                     onPress={onPress}>
               <View style={StyleSheet.flatten([styles.fab, {top: -28}])}>
-                <Text style={styles.fabText}><Icon name='md-checkmark' size={25}/></Text>
+                <Text style={styles.fabText}><Icon name={icon} size={25}/></Text>
               </View>
-            </TouchableNativeFeedback>}
+            </TouchableNativeFeedback>
             <Text style={StyleSheet.flatten([styles.subheader, {marginTop: 25, marginBottom: 15}])}>Scores</Text>
             <ScoreTable scores={scores} players={players}/>
           </View>
@@ -44,8 +89,8 @@ class GameBoard extends Component {
   };
 }
 
-const _Header = ({scores, players, finished, currentGame}) => {
-  const topText = finished ?
+const _Header = ({scores, players, finished, currentGame, time}) => {
+  const topText    = finished ?
           <Icon name='md-trophy' color='#FFF' size={35}/> :
           <Text style={{fontSize: 14 , color: '#FFF'}}>We spelen</Text>,
         bottomText = finished ?
@@ -55,6 +100,14 @@ const _Header = ({scores, players, finished, currentGame}) => {
     <View style={{backgroundColor: colors.main, alignItems: 'center', justifyContent: 'center', height: 250}}>
       <Image source={require('../images/back.png')}
              style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        <Text style={{
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#FFF'
+        }}><Icon name='md-alarm' color='#FFF' size={14}/>&nbsp;{time}</Text>
         <View style={{
                 width: 160,
                 height: 160,
@@ -62,7 +115,7 @@ const _Header = ({scores, players, finished, currentGame}) => {
                 justifyContent: 'center',
                 borderWidth: 6,
                 borderRadius: 80,
-                borderColor: '#006064'
+                borderColor: colors.mainDark
               }}>
           {topText}
           {bottomText}

@@ -54,6 +54,10 @@ class AddScores extends Component {
     this.setState({scores});
   };
 
+  focusNextField = (nextField) => {
+    this.refs[nextField].focus();
+  };
+
   render() {
     const {players, currentGame} = this.props;
     return (
@@ -68,9 +72,11 @@ class AddScores extends Component {
           onActionSelected={this.insertScores}/>
         <ScrollView style={styles.container}>
           <Text style={styles.subheader}>Voeg score per speler in: </Text>
-          <Text style={{marginBottom: 20}}>Scores voor de ronde <Text
-            style={{fontWeight: 'bold'}}>{currentGame}</Text></Text>
+          <Text style={{marginBottom: 20}}>Scores voor de ronde&nbsp;
+            <Text style={{fontWeight: 'bold'}}>{currentGame}</Text>
+          </Text>
           {players.map((player, index) => {
+            const last = index === players.length - 1;
             return (
               <View key={index}
                     style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 70}}>
@@ -81,8 +87,15 @@ class AddScores extends Component {
                   onChangeText={(value) => this.updateScore(index, value)}
                   underlineColorAndroid={colors.main}
                   keyboardType='numeric'
+                  ref={`score-${index}`}
                   style={{width: 100, height: 60, fontSize: 18}}
                   placeholder={`score`}
+                  onSubmitEditing={() => {
+                    if(!last) {
+                      this.focusNextField(`score-${index + 1}`);
+                    }
+                  }}
+                  returnKeyType={last ? 'done' : 'next'}
                   value={this.state.scores[index]}/>
               </View>
             );

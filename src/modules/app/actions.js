@@ -1,4 +1,5 @@
-import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, GET_GAMES, SAVE_GAME} from './constants'
+import {saveGame as apiSaveGame, getGames as apiGetGames} from '../../helpers/api';
 
 //each action should return the following signiture.
 //  {
@@ -31,7 +32,7 @@ export const newPlayer = () => {
 export const removePlayer = (id) => {
   return {
     type: REMOVE_PLAYER,
-    payload:{
+    payload: {
       id
     }
   }
@@ -49,35 +50,16 @@ export const updatePlayer = (id, field, data) => {
   }
 };
 
-export const incrementWithDelay = (id) => {
+export const getGames = () => {
   return (dispatch, getState) => {
-
-    //we are going to do some async call here  for example an ajax call.
-    //for simplicity I will just use setTimeout.
-
-    //if you return a function from action instead of an object, thunk middleware
-    //will kicks in and calls your function with dispatch argument. It also sends
-    //you a function call getState. you have to invoke getState() to get a copy of
-    //current state. always treat that state as READONLY. do not modify it.
-
-    //most of the time you don't need getState. but in some scnario you need to know.
-    //as an example, if you are already fetched user list, you don't need to fetch it again
-    //you can consume the user list from state.
-
-    //Again, use getState if you don't have any other oprions.
-
-    //one more thing, by accessing dispatch, you can have the power of calling
-    //multiple action types. This is completly valid.
-
-    //you are not abligated to call dispatch all the time
-
-    setTimeout(() => {
+    apiGetGames('Jasper').then((result) => {
       dispatch({
-        type: INCREMENT,
+        type: GET_GAMES,
         payload: {
-          id
+          result
         }
       })
-    }, 1000)
+    });
   }
-}
+};
+

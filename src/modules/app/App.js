@@ -3,7 +3,7 @@ import {StyleSheet, Navigator} from 'react-native'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import {Dashboard, AddPlayers, AddScores, GameBoard} from './../../components/index';
+import {Dashboard, AddPlayers, AddScores, GameBoard, Stats} from './../../components/index';
 
 import * as actions from './actions'
 
@@ -31,7 +31,7 @@ class App extends Component {
     const props = this.props;
     switch (route.id) {
       case 'dashboard':
-        return (<Dashboard title='Dashboard' navigator={navigator}/>);
+        return (<Dashboard title='Dashboard' navigator={navigator} getGames={props.getGames}/>);
       case 'addplayers':
         return (<AddPlayers navigator={navigator}
                             addFnc={props.addNewPlayer}
@@ -45,13 +45,17 @@ class App extends Component {
                            scores={props.scores}
                            currentGame={props.currentGame}
                            finished={props.finished}
-                           title='Add Players'/>);
+                           title='Gameboard'/>);
       case 'addscores':
         return (<AddScores navigator={navigator}
                            players={props.players}
                            currentGame={props.currentGame}
                            addScores={props.addScores}
                            title='Add Scores'/>);
+      case 'stats':
+        return (<Stats navigator={navigator}
+                       {...route}
+                       title='Statistieken'/>);
     }
   };
 }
@@ -69,7 +73,7 @@ const mapStateToProps = (state) => {
     currentGame: state.app.currentGame,
     scores: state.app.scores,
     finished: state.app.finished
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -77,8 +81,9 @@ const mapDispatchToProps = (dispatch) => {
     addNewPlayer: () => dispatch(actions.newPlayer()),
     updatePlayer: (id, field, name) => dispatch(actions.updatePlayer(id, field, name)),
     removePlayer: (id) => dispatch(actions.removePlayer(id)),
-    addScores: (game, scores) => dispatch(actions.addScores(game, scores))
-  }
+    addScores: (game, scores) => dispatch(actions.addScores(game, scores)),
+    getGames: () => dispatch(actions.getGames())
+  };
 };
 
 //Here's the most complex part of our app. connect is a function which selects,

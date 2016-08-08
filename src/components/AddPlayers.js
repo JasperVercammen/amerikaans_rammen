@@ -13,6 +13,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles, {colors} from '../styles/general';
 
 class AddPlayers extends Component {
+  constructor() {
+    super();
+  }
+
+  focusNextField = (nextField) => {
+    this.refs[nextField].focus();
+  };
+
   startGame = (action) => {
     if (some(this.props.players, ['name', ''])) {
       return Alert.alert('Foutje', 'U moet eerst alle namen invullen voor u kan verdergaan.');
@@ -38,6 +46,7 @@ class AddPlayers extends Component {
         <ScrollView style={styles.container}>
           <Text style={styles.subheader}>Voeg de spelers toe</Text>
           {players.map((player, index) => {
+            const last = index === players.length - 1;
             return (
               <View key={index}
                     style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 70}}>
@@ -45,11 +54,19 @@ class AddPlayers extends Component {
                 <TextInput
                   onChangeText={(text)=>{updateFnc(index, 'name', text)}}
                   underlineColorAndroid={colors.main}
+                  autoCapitalize='words'
+                  ref={`player-${index}`}
                   style={{flex: 1, alignSelf: 'stretch', height: 60, fontSize: 18}}
                   placeholder={`Naam speler ${index + 1}`}
+                  onSubmitEditing={() => {
+                    if(!last) {
+                      this.focusNextField(`player-${index + 1}`);
+                    }
+                  }}
+                  returnKeyType={last ? 'done' : 'next'}
                   value={player.name}/>
                 {players.length > 2 ?
-                  <Icon.Button name='md-close' style={{width: 40}} backgroundColor='transparent' color={colors.text}
+                  <Icon.Button name='md-close' style={{width: 40}} backgroundColor='transparent' underlayColor='transparent' color={colors.text}
                                onPress={() => removeFnc(index)}/> :
                   <View style={{width: 40}}/>
                 }

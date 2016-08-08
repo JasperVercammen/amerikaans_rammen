@@ -6,6 +6,7 @@ import {
 
 export const colors = {
   main: '#0097A7',
+  mainDark: '#006064',
   cta: '#FF9800',
   mainText: '#FFFFFF',
   ctaText: '#FFFFFF',
@@ -63,6 +64,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10
+  },
+  statRow: {
+    marginBottom: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E3E3E3'
   }
 });
 
