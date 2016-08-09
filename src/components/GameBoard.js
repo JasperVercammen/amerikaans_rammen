@@ -99,7 +99,8 @@ const _Header = ({scores, players, finished, currentGame, time}) => {
   return (
     <View style={{backgroundColor: colors.main, alignItems: 'center', justifyContent: 'center', height: 250}}>
       <Image source={require('../images/back.png')}
-             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}
+             resizeMode='cover'>
         <Text style={{
           position: 'absolute',
           top: 10,

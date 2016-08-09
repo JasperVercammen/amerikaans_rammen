@@ -4,7 +4,6 @@ import {
   Image,
   RefreshControl,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
@@ -69,7 +68,7 @@ class Dashboard extends Component {
 
 
   onActionSelect = () => {
-    console.log('Actions');
+    
   };
 
   render() {

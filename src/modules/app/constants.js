@@ -11,3 +11,4 @@ export const UPDATE_PLAYER = `${NAME}/UPDATE_PLAYER`;
 export const REMOVE_PLAYER = `${NAME}/REMOVE_PLAYER`;
 export const ADD_SCORES = `${NAME}/ADD_SCORES`;
 export const GET_GAMES = `${NAME}/GET_GAMES`;
+export const RESET_GAME = `${NAME}/RESET_GAME`;

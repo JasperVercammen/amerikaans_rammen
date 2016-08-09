@@ -1,5 +1,5 @@
 import {handleActions} from 'redux-actions'
-import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, SAVE_GAME, GET_GAMES} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, RESET_GAME, GET_GAMES} from './constants'
 import {clone, filter} from 'lodash';
 import {games, getNextGame} from '../../helpers/games';
 
@@ -81,6 +81,15 @@ export default handleActions({
     return {
       ...state,
       savedGames: result
+    }
+  },
+  [RESET_GAME]: (state, action) => {
+    const {payload: {keepPlayers}} = action;
+
+    return {
+      ...initialState,
+      savedGames: state.savedGames,
+      players: keepPlayers ? state.players : initialState.players
     }
   }
 }, initialState)

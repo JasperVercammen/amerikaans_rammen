@@ -1,4 +1,4 @@
-import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, GET_GAMES, SAVE_GAME} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, GET_GAMES, RESET_GAME} from './constants'
 import {saveGame as apiSaveGame, getGames as apiGetGames} from '../../helpers/api';
 
 //each action should return the following signiture.
@@ -63,3 +63,11 @@ export const getGames = () => {
   }
 };
 
+export const resetGame = (keepPlayers = false) => {
+  return {
+    type: RESET_GAME,
+    payload: {
+      keepPlayers
+    }
+  }
+};

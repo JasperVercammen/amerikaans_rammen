@@ -3,7 +3,7 @@ import {StyleSheet, Navigator} from 'react-native'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import {Dashboard, AddPlayers, AddScores, GameBoard, Stats} from './../../components/index';
+import {Dashboard, AddPlayers, AddScores, GameBoard, Stats, Login} from './../../components/index';
 
 import * as actions from './actions'
 
@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <Navigator
         style={styles.container}
-        initialRoute={{id: 'dashboard'}}
+        initialRoute={{id: 'login'}}
         renderScene={this.navigatorRenderScene}
         configureScene={this.navigatorConfigureScene}/>
     );
@@ -30,8 +30,15 @@ class App extends Component {
   navigatorRenderScene = (route, navigator) => {
     const props = this.props;
     switch (route.id) {
+      case 'login':
+        return (<Login title='Login'
+                       navigator={navigator}
+                       login={()=>{}}
+                       register={()=>{}}/>);
       case 'dashboard':
-        return (<Dashboard title='Dashboard' navigator={navigator} getGames={props.getGames}/>);
+        return (<Dashboard title='Dashboard'
+                           navigator={navigator}
+                           getGames={props.getGames}/>);
       case 'addplayers':
         return (<AddPlayers navigator={navigator}
                             addFnc={props.addNewPlayer}
@@ -55,6 +62,7 @@ class App extends Component {
       case 'stats':
         return (<Stats navigator={navigator}
                        {...route}
+                       resetGame={props.resetGame}
                        title='Statistieken'/>);
     }
   };
@@ -82,7 +90,8 @@ const mapDispatchToProps = (dispatch) => {
     updatePlayer: (id, field, name) => dispatch(actions.updatePlayer(id, field, name)),
     removePlayer: (id) => dispatch(actions.removePlayer(id)),
     addScores: (game, scores) => dispatch(actions.addScores(game, scores)),
-    getGames: () => dispatch(actions.getGames())
+    getGames: () => dispatch(actions.getGames()),
+    resetGame: () => dispatch(actions.resetGame())
   };
 };
 

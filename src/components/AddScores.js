@@ -80,7 +80,7 @@ class AddScores extends Component {
             return (
               <View key={index}
                     style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 70}}>
-                <Text style={{width: 100, textAlign: 'right', marginRight: 10, fontSize: 16}}>
+                <Text style={{width: 150, textAlign: 'right', marginRight: 10, fontSize: 16}}>
                   <Icon name='md-person' size={16} color={colors.text}/> {player.name}
                 </Text>
                 <TextInput

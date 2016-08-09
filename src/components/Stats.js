@@ -32,6 +32,7 @@ class Stats extends Component {
       saveGame('Jasper', props.players, props.scores, props.gameStart).then((result) => {
         ToastAndroid.show('Uw spel werd succesvol opgeslagen.', ToastAndroid.LONG)
       });
+      props.resetGame();
     }
   }
 
@@ -91,7 +92,8 @@ const _Header = ({scores, players}) => {
   return (
     <View style={{backgroundColor: colors.main, alignItems: 'center', justifyContent: 'center', height: 250}}>
       <Image source={require('../images/back.png')}
-             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}
+             resizeMode='cover'>
         <View style={{
                 width: 160,
                 height: 160,
@@ -184,6 +186,7 @@ Stats.propTypes = {
   scores: PropTypes.object.isRequired,
   gameStart: PropTypes.number.isRequired,
   gameEnd: PropTypes.number.isRequired,
+  resetGame: PropTypes.func.isRequired,
   save: PropTypes.bool
 };
 
