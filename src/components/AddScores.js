@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {
   Alert,
-  ScrollView,
   Text,
   TextInput,
   TouchableNativeFeedback,
@@ -11,6 +10,7 @@ import {
 import {clone, map, some} from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles, {colors} from '../styles/general';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class AddScores extends Component {
   constructor() {
@@ -70,7 +70,7 @@ class AddScores extends Component {
           onIconClicked={this.closeNoSave}
           actions={[{ title: 'start', iconName: 'md-checkmark', iconSize: 25, show: 'always' }]}
           onActionSelected={this.insertScores}/>
-        <ScrollView style={styles.container}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps={true} style={styles.container}>
           <Text style={styles.subheader}>Voeg score per speler in: </Text>
           <Text style={{marginBottom: 20}}>Scores voor de ronde&nbsp;
             <Text style={{fontWeight: 'bold'}}>{currentGame}</Text>
@@ -79,8 +79,8 @@ class AddScores extends Component {
             const last = index === players.length - 1;
             return (
               <View key={index}
-                    style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 70}}>
-                <Text style={{width: 150, textAlign: 'right', marginRight: 10, fontSize: 16}}>
+                    style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', height: 70}}>
+                <Text style={{width: 100, textAlign: 'right', marginLeft: 10, fontSize: 16}}>
                   <Icon name='md-person' size={16} color={colors.text}/> {player.name}
                 </Text>
                 <TextInput
@@ -100,7 +100,7 @@ class AddScores extends Component {
               </View>
             );
           })}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     );
   };

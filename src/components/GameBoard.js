@@ -64,7 +64,7 @@ class GameBoard extends Component {
   };
 
   render() {
-    const {players, scores, currentGame, finished} = this.props,
+    const {players, scores, currentGame, finished, dealer} = this.props,
           onPress = this.addScores,
           icon    = 'md-checkmark';
     return (
@@ -81,7 +81,7 @@ class GameBoard extends Component {
               </View>
             </TouchableNativeFeedback>
             <Text style={StyleSheet.flatten([styles.subheader, {marginTop: 25, marginBottom: 15}])}>Scores</Text>
-            <ScoreTable scores={scores} players={players}/>
+            <ScoreTable scores={scores} players={players} dealer={dealer}/>
           </View>
         </ScrollView>
       </View>
@@ -99,8 +99,7 @@ const _Header = ({scores, players, finished, currentGame, time}) => {
   return (
     <View style={{backgroundColor: colors.main, alignItems: 'center', justifyContent: 'center', height: 250}}>
       <Image source={require('../images/back.png')}
-             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}
-             resizeMode='cover'>
+             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
         <Text style={{
           position: 'absolute',
           top: 10,
@@ -129,6 +128,7 @@ const _Header = ({scores, players, finished, currentGame, time}) => {
 
 GameBoard.propTypes = {
   players: PropTypes.array.isRequired,
+  dealer: PropTypes.number.isRequired,
   currentGame: PropTypes.string.isRequired,
   scores: PropTypes.object.isRequired,
   finished: PropTypes.bool.isRequired

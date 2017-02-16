@@ -46,22 +46,23 @@ const getWinner = (scores, players) => {
 
 const getWinnerName = (scores, players) => {
   const winner = getWinner(scores, players);
-  if(!isEmpty(winner)){
+  if (!isEmpty(winner)) {
     return winner.name;
   }
   return '';
 };
 
-const ScoreTable = ({players, scores}) => {
-  const NAME_WIDTH = 85,
-        TOTAL_WIDTH = 50,
-        SCORE_FACTOR = 3,
+const ScoreTable = ({players, scores, dealer = -1}) => {
+  const NAME_WIDTH    = 70,
+        TOTAL_WIDTH   = 50,
+        SCORE_FACTOR  = 3,
         SCORE_FACTOR2 = 7;
   return (
     <ScrollView style={{flex: 1}} horizontal={true} showsHorizontalScrollIndicator={false}>
       <View>
         <View
           style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 10, borderBottomColor: '#E3E3E3', borderBottomWidth: 2}}>
+          <_DealerButton show={false}/>
           <Text style={{
                   color: colors.text,
                   width: NAME_WIDTH,
@@ -97,7 +98,10 @@ const ScoreTable = ({players, scores}) => {
                     borderBottomColor: '#E3E3E3',
                     borderBottomWidth: 1
                   }}>
-              <Text style={{
+              <_DealerButton show={index===dealer}/>
+              <Text numberOfLines={1}
+                    ellipsizeMode='tail'
+                    style={{
                       color: colors.text,
                       width: NAME_WIDTH,
                       marginRight: 10,
@@ -132,6 +136,27 @@ const ScoreTable = ({players, scores}) => {
         })}
       </View>
     </ScrollView>
+  );
+};
+
+const _DealerButton = ({show}) => {
+  if(!show){
+    return <View style={{width: 20, height: 20, marginRight: 10}}/>
+  }
+  return (
+    <View style={{
+      width: 20,
+      height: 20,
+      marginRight: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.cta,
+      borderWidth: 1,
+      borderRadius: 10,
+      borderColor: colors.cta
+    }}>
+      <Text style={{color: '#FFF', fontSize: 12, fontWeight: 'bold'}}>D</Text>
+    </View>
   );
 };
 

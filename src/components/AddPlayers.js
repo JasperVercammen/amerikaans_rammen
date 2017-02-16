@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {
   Alert,
-  ScrollView,
+  Picker,
+  Switch,
   Text,
   TextInput,
   TouchableNativeFeedback,
@@ -10,12 +11,23 @@ import {
 } from 'react-native';
 import {some} from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Separator from '../helpers/Separator';
 import styles, {colors} from '../styles/general';
 
 class AddPlayers extends Component {
   constructor() {
     super();
+    this.state = {
+      trackDealer: false,
+      dealer: 0
+    };
   }
+
+  onChangeDealer = (dealer) => {
+    this.setState({dealer});
+    this.props.changeDealer(dealer);
+  };
 
   focusNextField = (nextField) => {
     this.refs[nextField].focus();
@@ -32,7 +44,7 @@ class AddPlayers extends Component {
   };
 
   render() {
-    const {players, removeFnc, updateFnc, addFnc} = this.props;
+    const {players, removeFnc, updateFnc, addFnc, changeDealer} = this.props;
     return (
       <View style={styles.wrapper}>
         <Icon.ToolbarAndroid
@@ -43,7 +55,7 @@ class AddPlayers extends Component {
           onIconClicked={this.props.navigator.pop}
           actions={[{ title: 'start', iconName: 'md-checkmark', iconSize: 25, show: 'always' }]}
           onActionSelected={this.startGame}/>
-        <ScrollView style={styles.container}>
+        <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
           <Text style={styles.subheader}>Voeg de spelers toe</Text>
           {players.map((player, index) => {
             const last = index === players.length - 1;
@@ -83,7 +95,36 @@ class AddPlayers extends Component {
               </View>
             </TouchableNativeFeedback>
           </View>}
-        </ScrollView>
+          <Separator />
+          <Text style={styles.subheader}>Deler aanduiden</Text>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingRowText}>Wilt u de deelvolgorde bijhouden?</Text>
+            <Switch
+              onValueChange={(value) => {
+                this.setState({trackDealer: value});
+                if (value) {
+                  changeDealer(-1);
+                } else {
+                  changeDealer(this.state.dealer);
+                }
+              }}
+              value={this.state.trackDealer}/>
+          </View>
+          {this.state.trackDealer && <View style={{marginBottom: 15}}>
+            <Text style={styles.extraInfo}>
+              Duid hieronder de speler aan die start met delen. Daarna zal de volgorde gevolgd worden waarin de spelers zijn ingegeven.
+              Geef de spelers dus in in de volgorde dat ze aam de tafel zitten.
+            </Text>
+            <Picker
+              selectedValue={this.state.dealer}
+              mode='dropdown'
+              onValueChange={this.onChangeDealer}>
+              {players.map((player, index) => {
+                return <Picker.Item key={index} label={player.name || `Speler ${index + 1}`} value={index}/>
+              })}
+            </Picker>
+          </View>}
+        </KeyboardAwareScrollView>
       </View>
     );
   };
@@ -93,7 +134,8 @@ AddPlayers.propTypes = {
   players: PropTypes.array.isRequired,
   addFnc: PropTypes.func.isRequired,
   updateFnc: PropTypes.func.isRequired,
-  removeFnc: PropTypes.func.isRequired
+  removeFnc: PropTypes.func.isRequired,
+  changeDealer: PropTypes.func.isRequired
 };
 
 export default AddPlayers;

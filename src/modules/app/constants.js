@@ -12,3 +12,4 @@ export const REMOVE_PLAYER = `${NAME}/REMOVE_PLAYER`;
 export const ADD_SCORES = `${NAME}/ADD_SCORES`;
 export const GET_GAMES = `${NAME}/GET_GAMES`;
 export const RESET_GAME = `${NAME}/RESET_GAME`;
+export const CHANGE_DEALER = `${NAME}/CHANGE_DEALER`;

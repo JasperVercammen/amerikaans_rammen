@@ -1,11 +1,12 @@
 import {handleActions} from 'redux-actions'
-import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, RESET_GAME, GET_GAMES} from './constants'
+import {ADD_NEW_PLAYER, UPDATE_PLAYER, REMOVE_PLAYER, ADD_SCORES, RESET_GAME, GET_GAMES, CHANGE_DEALER} from './constants'
 import {clone, filter} from 'lodash';
 import {games, getNextGame} from '../../helpers/games';
 
 const initialState = {
   savedGames: [],
   playerCount: 2,
+  dealer: -1,
   players: [{name: ''}, {name: ''}],
   scores: {
     [games[0]]: [],
@@ -61,15 +62,17 @@ export default handleActions({
     }
   },
   [ADD_SCORES]: (state, action) => {
-    const {payload: {game, scores}} = action;
+    const {payload: {game, scores}} = action,
+          {dealer, players} = state;
 
     const stateScores = clone(state.scores);
     stateScores[game] = scores;
 
     const nextGame = getNextGame(state.currentGame);
-
+    const newDealer = dealer < 0 ? -1 : (dealer + 1 ) % players.length;
     return {
       ...state,
+      dealer: newDealer,
       scores: stateScores,
       currentGame: nextGame ? nextGame : state.currentGame,
       finished: nextGame ? false : true
@@ -90,6 +93,14 @@ export default handleActions({
       ...initialState,
       savedGames: state.savedGames,
       players: keepPlayers ? state.players : initialState.players
+    }
+  },
+  [CHANGE_DEALER]: (state, action) => {
+    const {payload: {dealer}} = action;
+
+    return {
+      ...state,
+      dealer: dealer
     }
   }
 }, initialState)

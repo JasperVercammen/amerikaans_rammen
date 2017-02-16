@@ -10,7 +10,8 @@ export const colors = {
   cta: '#FF9800',
   mainText: '#FFFFFF',
   ctaText: '#FFFFFF',
-  text: 'rgba(0, 0, 0, 0.87)'
+  text: 'rgba(0, 0, 0, 0.87)',
+  textLight: 'rgba(0, 0, 0, 0.57)'
 };
 
 const styles = StyleSheet.create({
@@ -64,6 +65,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10
+  },
+  settingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+  settingRowText: {
+    color: colors.text,
+    fontSize: 14
+  },
+  extraInfo: {
+    color: colors.textLight,
+    fontStyle: 'italic',
+    fontSize: 12
   },
   statRow: {
     marginBottom: 10,
