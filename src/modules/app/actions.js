@@ -51,7 +51,7 @@ export const updatePlayer = (id, field, data) => {
 };
 
 export const getGames = () => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     apiGetGames('Jasper').then((result) => {
       dispatch({
         type: GET_GAMES,
